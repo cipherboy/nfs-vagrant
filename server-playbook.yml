@@ -1,0 +1,99 @@
+---
+  - hosts: all
+    remote_user: root
+    sudo: yes
+    tasks:
+      - name: Install KRB5 Workstation
+        dnf: name=krb5-workstation state=latest
+      - name: Install GSSProxy
+        dnf: name=gssproxy state=latest
+      - name: Install SSSD KRB5 Backend
+        dnf: name=sssd-krb5 state=latest
+      - name: Install NFS Utils
+        dnf: name=nfs-utils state=latest
+      - name: Install RPC Bind
+        dnf: name=rpcbind state=latest
+      - name: Install AutoFS
+        dnf: name=autofs state=latest
+      - name: Set /etc/krb5.conf
+        copy:
+            src: etc-krb5.conf
+            dest: /etc/krb5.conf
+            owner: root
+            group: root
+            mode: "u=rw,g=r,o=r"
+      - name: Add vkdc to /etc/hosts
+        lineinfile:
+            path: /etc/hosts
+            regexp: '^192.168.56.5'
+            line: '192.168.56.5 vkdc.mivehind.net'
+      - name: Add nfs-server to /etc/hosts
+        lineinfile:
+            path: /etc/hosts
+            regexp: '^192.168.56.10'
+            line: '192.168.56.10 nfs-server.mivehind.net'
+      - name: Add nfs-client to /etc/hosts
+        lineinfile:
+            path: /etc/hosts
+            regexp: '^192.168.56.15'
+            line: '192.168.56.15 nfs-client.mivehind.net'
+      - name: Put /tmp/setup-host.sh
+        copy:
+            src: setup-host.sh
+            dest: /tmp/setup-host.sh
+            owner: root
+            group: root
+            mode: "u=rwx,g=rwx,o=rwx"
+      - name: Run /tmp/setup-host.sh
+        command: /tmp/setup-host.sh nfs-server
+      - name: Add robbie user
+        command: useradd -m -s /bin/bash robbie
+        args:
+            creates: /home/robbie
+      - name: Add alex user
+        command: useradd -m -s /bin/bash alex
+        args:
+            creates: /home/alex
+      - name: Create RPC Bind directory
+        file: path=/run/rpcbind state=directory
+      - name: Create RO NFS Directory
+        file: path=/srv/ro state=directory
+      - name: Create RO NFS README file
+        file: path=/srv/ro/README state=touch
+      - name: Set /etc/exports
+        copy:
+            src: etc-exports
+            dest: /etc/exports
+            owner: root
+            group: root
+            mode: "u=rw,g=r,o=r"
+      - name: Set /etc/hosts.allow
+        copy:
+            src: etc-hosts.allow
+            dest: /etc/hosts.allow
+            owner: root
+            group: root
+            mode: "u=rw,g=r,o=r"
+      - name: Add SECURE_NFS to /etc/sysconfig/nfs
+        lineinfile:
+            path: /etc/sysconfig/nfs
+            regexp: '^SECURE_NFS="yes"'
+            line: 'SECURE_NFS="yes"'
+      - name: Enable RPC Bind
+        command: systemctl enable rpcbind
+      - name: Enable NFS Server
+        command: systemctl enable nfs
+      - name: Enable GSSProxy
+        command: systemctl enable gssproxy
+      - name: Start GSSProxy
+        command: systemctl start gssproxy
+      - name: Start RPC Bind
+        command: systemctl start rpcbind
+      - name: Start NFS Server
+        command: systemctl start nfs
+      - name: Restart GSSProxy
+        command: systemctl restart gssproxy
+      - name: Restart RPC Bind
+        command: systemctl restart rpcbind
+      - name: Restart NFS Server
+        command: systemctl restart nfs
