@@ -15,7 +15,7 @@
         dnf: name=autofs state=latest
       - name: Set /etc/krb5.conf
         copy:
-            src: etc-krb5.conf
+            src: configs/etc-krb5.conf
             dest: /etc/krb5.conf
             owner: root
             group: root
@@ -37,7 +37,7 @@
             line: '192.168.56.15 nfs-client.mivehind.net'
       - name: Put /tmp/setup-host.sh
         copy:
-            src: setup-host.sh
+            src: scripts/setup-host.sh
             dest: /tmp/setup-host.sh
             owner: root
             group: root
@@ -55,7 +55,7 @@
             line: '/mnt/nfs /etc/auto.home --timeout=300'
       - name: Set /etc/gssproxy/99-nfs-client.conf
         copy:
-            src: etc-gssproxy-99-nfs-client.conf
+            src: configs/etc-gssproxy-99-nfs-client.conf
             dest: /etc/gssproxy/99-nfs-client.conf
             owner: root
             group: root

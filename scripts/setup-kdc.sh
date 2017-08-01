@@ -15,9 +15,10 @@ echo -e "$ADMINPASS\n$ADMINPASS" | kadmin.local addprinc "admin/admin@$REALM" ||
 echo -e "$USER1PASS\n$USER1PASS" | kadmin.local addprinc "$USER1NAME@$REALM" || true
 echo -e "$USER2PASS\n$USER2PASS" | kadmin.local addprinc "$USER2NAME@$REALM" || true
 
-killall kadmind -s 9 || true
-killall krb5kdc -s 9 || true
 
-krb5kdc || true
-sleep 5
-kadmind || true
+systemctl enable krb5kdc || true
+systemctl enable kadmin || true
+systemctl start krb5kdc || true
+systemctl start kadmin || true
+systemctl restart krb5kdc || true
+systemctl restart kadmin || true

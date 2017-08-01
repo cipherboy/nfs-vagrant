@@ -51,7 +51,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     config.vm.provision "shell", inline: "sudo dnf -y install python2-dnf libselinux-python psmisc"
 
     # Install development tools
-    config.vm.provision "shell", inline: "sudo dnf -y install gdb valgrind git vim emacs-nox rxvt-unicode-256color strace nmap ltrace lsof"
+    config.vm.provision "shell", inline: "sudo dnf -y install gdb valgrind git vim emacs-nox rxvt-unicode-256color strace nmap ltrace lsof systemtap"
 
     # Install debug symbols
     config.vm.provision "shell", inline: "sudo dnf -y debuginfo-install gdb valgrind glibc krb5-workstation krb5-server gssproxy"
