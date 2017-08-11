@@ -67,6 +67,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
             domain.graphics_type = "spice"
             domain.memory = 2048
             domain.video_type = "qxl"
+            domain.random :model => "random"
 
             vkdc.vm.provision "ansible" do |ansible|
                 ansible.playbook = "vkdc-playbook.yml"
@@ -93,6 +94,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
             domain.graphics_type = "spice"
             domain.memory = 2048
             domain.video_type = "qxl"
+            domain.random :model => "random"
 
             server.vm.provision "ansible" do |ansible|
                 ansible.playbook = "server-playbook.yml"
@@ -119,6 +121,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
             domain.graphics_type = "spice"
             domain.memory = 2048
             domain.video_type = "qxl"
+            domain.random :model => "random"
 
             client.vm.provision "ansible" do |ansible|
                 ansible.playbook = "client-playbook.yml"
