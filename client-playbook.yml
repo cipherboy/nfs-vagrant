@@ -22,17 +22,17 @@
             mode: "u=rw,g=r,o=r"
       - name: Add vkdc to /etc/hosts
         lineinfile:
-            path: /etc/hosts
+            name: /etc/hosts
             regexp: '^192.168.56.5'
             line: '192.168.56.5 vkdc.mivehind.net'
       - name: Add nfs-server to /etc/hosts
         lineinfile:
-            path: /etc/hosts
+            name: /etc/hosts
             regexp: '^192.168.56.10'
             line: '192.168.56.10 nfs-server.mivehind.net'
       - name: Add nfs-client to /etc/hosts
         lineinfile:
-            path: /etc/hosts
+            name: /etc/hosts
             regexp: '^192.168.56.15'
             line: '192.168.56.15 nfs-client.mivehind.net'
       - name: Put /tmp/setup-host.sh
@@ -50,7 +50,7 @@
         file: path=/mnt/nfs/home state=directory
       - name: Add nfs to /etc/auto.master
         lineinfile:
-            path: /etc/auto.master
+            name: /etc/auto.master
             regexp: '^/mnt/nfs /etc/auto.home'
             line: '/mnt/nfs /etc/auto.home --timeout=300'
       - name: Set /etc/gssproxy/99-nfs-client.conf
@@ -78,7 +78,7 @@
         command: systemctl start gssproxy
       - name: Add SECURE_NFS to /etc/sysconfig/nfs
         lineinfile:
-            path: /etc/sysconfig/nfs
+            name: /etc/sysconfig/nfs
             regexp: '^SECURE_NFS="yes"'
             line: 'SECURE_NFS="yes"'
       - name: Restart GSSProxy
