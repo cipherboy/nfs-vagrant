@@ -4,14 +4,7 @@
 VAGRANTFILE_API_VERSION = "2"
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
-    # If you'd prefer to pull your boxes from Hashicorp's repository, you can
-    # replace the config.vm.box and config.vm.box_url declarations with the line below.
-    #
-    # config.vm.box = "fedora/25-cloud-base"
-    config.vm.box = "f26-cloud-libvirt"
-    config.vm.box_url = "https://download.fedoraproject.org/pub/fedora/linux/releases"\
-                        "/26/CloudImages/x86_64/images/Fedora-Cloud-Base-Vagrant-26-1"\
-                        ".5.x86_64.vagrant-libvirt.box"
+    config.vm.box = "fedora/26-cloud-base"
 
     # Optionally update the host's /etc/hosts file with the hostname of the
     # guest VM.
@@ -20,14 +13,23 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
         config.hostmanager.manage_host = true
     end
 
-    #Dir.mkdir('.dnf-cache') unless File.exists?('.dnf-cache')
-    #config.vm.synced_folder ".dnf-cache", "/var/cache/dnf", type: "sshfs", sshfs_opts_append: "-o nonempty"
-    # To cache update packages (which is helpful if frequently doing `vagrant
-    # destroy && vagrant up`) create a local directory and share it to the
-    # guest's DNF cache.
+    # Cache update packages (helpful if frequently doing `vagrant destroy &&
+    # vagrant up`) by creating a local directory and sharing it to the guest's
+    # DNF cache.
+    Dir.mkdir('.dnf-cache') unless File.exists?('.dnf-cache')
+    config.vm.synced_folder ".dnf-cache", "/var/cache/dnf", type: "sshfs",
+                            sshfs_opts_append: "-o nonempty"
 
-    # Comment this line if you would like to disable the automatic update during provisioning
-    config.vm.provision "shell", inline: "sudo dnf upgrade -y"
+    # Avoid mirror inconsistency.
+    config.vm.provision "shell",
+                        inline: "sudo sed -i -e 's/metalink/\#metalink/g' "\
+                                "-e 's/\#baseurl/baseurl/g' "\
+                                "-e 's/download.fedoraproject.org\\/pub/mirrors.mit.edu/g' "\
+                                "/etc/yum.repos.d/*.repo"
+
+    # Cope with cache and mirror failures by doing this in two parts.
+    config.vm.provision "shell", inline: "sudo dnf upgrade -y --downloadonly"
+    config.vm.provision "shell", inline: "sudo dnf -C upgrade -y || true"
 
     # Disable SELinux
     config.vm.provision "shell", inline: "setenforce 0"
