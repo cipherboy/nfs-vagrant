@@ -20,12 +20,12 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     config.vm.synced_folder ".dnf-cache", "/var/cache/dnf", type: "sshfs",
                             sshfs_opts_append: "-o nonempty"
 
-    # Avoid mirror inconsistency.
-    config.vm.provision "shell",
-                        inline: "sudo sed -i -e 's/metalink/\#metalink/g' "\
-                                "-e 's/\#baseurl/baseurl/g' "\
-                                "-e 's/download.fedoraproject.org\\/pub/mirrors.mit.edu/g' "\
-                                "/etc/yum.repos.d/*.repo"
+    # # Avoid mirror inconsistency.
+    # config.vm.provision "shell",
+    #                     inline: "sudo sed -i -e 's/metalink/\#metalink/g' "\
+    #                             "-e 's/\#baseurl/baseurl/g' "\
+    #                             "-e 's/download.fedoraproject.org\\/pub/mirrors.mit.edu/g' "\
+    #                             "/etc/yum.repos.d/*.repo"
 
     # Cope with cache and mirror failures by doing this in two parts.
     config.vm.provision "shell", inline: "sudo dnf upgrade -y --downloadonly"
@@ -42,7 +42,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     config.vm.provision "shell", inline: "sudo dnf -y install gdb valgrind git vim emacs-nox rxvt-unicode-256color strace nmap ltrace lsof systemtap"
 
     # Install debug symbols
-    config.vm.provision "shell", inline: "sudo dnf -y debuginfo-install gdb valgrind glibc krb5-workstation krb5-server krb5-libs gssproxy"
+    config.vm.provision "shell", inline: "sudo dnf -y debuginfo-install gdb valgrind glibc krb5-workstation krb5-server krb5-libs gssproxy nfs-utils"
 
     config.vm.define "vkdc" do |vkdc|
         vkdc.vm.host_name = "vkdc.mivehind.net"
