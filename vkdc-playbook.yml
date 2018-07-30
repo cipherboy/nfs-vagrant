@@ -65,10 +65,10 @@
             mode: "u=rwx,g=rwx,o=rwx"
       - name: Run /tmp/setup-host.sh
         command: /tmp/setup-host.sh vkdc
-      - name: Add robbie user
-        command: useradd -m -s /bin/bash robbie
+      - name: Add rharwood user
+        command: useradd -m -s /bin/bash rharwood
         args:
-            creates: /home/robbie
+            creates: /home/rharwood
       - name: Add alex user
         command: useradd -m -s /bin/bash alex
         args:

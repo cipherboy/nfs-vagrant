@@ -1,7 +1,7 @@
 #!/bin/sh
 
 REALM="NFS.TEST"
-ADMINPASS="password"
+ADMINPASS="secretes"
 
 hname="$1.nfs.test"
 

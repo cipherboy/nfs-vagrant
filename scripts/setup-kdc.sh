@@ -1,14 +1,14 @@
 #!/bin/sh
 
 REALM="NFS.TEST"
-KDCPASS="password"
+KDCPASS="secretes"
 ADMINPASS="$KDCPASS"
 
-USER1NAME="robbie"
+USER1NAME="rharwood"
 USER1PASS="$KDCPASS"
 
 USER2NAME="alex"
-USER2PASS="$KDCPASS"
+USER2PASS="password"
 
 echo -e "$KDCPASS\n$KDCPASS" | kdb5_util create -r $REALM -s || true
 echo -e "$ADMINPASS\n$ADMINPASS" | kadmin.local addprinc "admin/admin@$REALM" || true

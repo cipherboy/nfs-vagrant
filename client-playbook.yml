@@ -60,12 +60,12 @@
             owner: root
             group: root
             mode: "u=rwx,g=rwx,o=rwx"
-      - name: Add robbie user
+      - name: Add rharwood user
         user:
-            name: robbie
+            name: rharwood
             shell: /bin/bash
             createhome: no
-            home: /mnt/nfs/home/robbie
+            home: /mnt/nfs/home/rharwood
       - name: Add alex user
         user:
             name: alex
