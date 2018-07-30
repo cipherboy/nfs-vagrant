@@ -45,7 +45,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     config.vm.provision "shell", inline: "sudo dnf -y debuginfo-install gdb valgrind glibc krb5-workstation krb5-server krb5-libs gssproxy nfs-utils"
 
     config.vm.define "vkdc" do |vkdc|
-        vkdc.vm.host_name = "vkdc.mivehind.net"
+        vkdc.vm.host_name = "vkdc.nfs.test"
         vkdc.vm.network :private_network, ip: "192.168.56.5"
 
         vkdc.vm.provider :libvirt do |domain|
@@ -62,7 +62,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     end
 
     config.vm.define "nfs-server" do |server|
-        server.vm.host_name = "nfs-server.mivehind.net"
+        server.vm.host_name = "nfs-server.nfs.test"
         server.vm.network :private_network, ip: "192.168.56.10"
 
         server.vm.provider :libvirt do |domain|
@@ -79,7 +79,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     end
 
     config.vm.define "nfs-client" do |client|
-        client.vm.host_name = "nfs-client.mivehind.net"
+        client.vm.host_name = "nfs-client.nfs.test"
         client.vm.network :private_network, ip: "192.168.56.15"
 
         client.vm.provider :libvirt do |domain|

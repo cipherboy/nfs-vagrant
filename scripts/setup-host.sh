@@ -1,9 +1,9 @@
 #!/bin/sh
 
-REALM="MIVEHIND.NET"
+REALM="NFS.TEST"
 ADMINPASS="password"
 
-hname="$1.mivehind.net"
+hname="$1.nfs.test"
 
 rm /etc/krb5.keytab -rf || true
 echo -e "$ADMINPASS\n$ADMINPASS" | kadmin -p "admin/admin@$REALM" addprinc -randkey host/$hname || true

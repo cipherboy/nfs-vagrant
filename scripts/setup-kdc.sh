@@ -1,6 +1,6 @@
 #!/bin/sh
 
-REALM="MIVEHIND.NET"
+REALM="NFS.TEST"
 KDCPASS="password"
 ADMINPASS="$KDCPASS"
 

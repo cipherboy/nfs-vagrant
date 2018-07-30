@@ -24,17 +24,17 @@
         lineinfile:
             name: /etc/hosts
             regexp: '^192.168.56.5'
-            line: '192.168.56.5 vkdc.mivehind.net'
+            line: '192.168.56.5 vkdc.nfs.test'
       - name: Add nfs-server to /etc/hosts
         lineinfile:
             name: /etc/hosts
             regexp: '^192.168.56.10'
-            line: '192.168.56.10 nfs-server.mivehind.net'
+            line: '192.168.56.10 nfs-server.nfs.test'
       - name: Add nfs-client to /etc/hosts
         lineinfile:
             name: /etc/hosts
             regexp: '^192.168.56.15'
-            line: '192.168.56.15 nfs-client.mivehind.net'
+            line: '192.168.56.15 nfs-client.nfs.test'
       - name: Put /tmp/setup-host.sh
         copy:
             src: scripts/setup-host.sh
